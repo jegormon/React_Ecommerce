@@ -6,6 +6,10 @@ A React e-commerce website that is currently being developed.
 
 Release notes
 
+v 1.1.3
+
+- Moved the app to Redux Saga
+
 v 1.1.2
 
 - Added redux-thunk
