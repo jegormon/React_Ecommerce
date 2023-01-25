@@ -1,22 +1,23 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-import FormInput from '../form-input/form-input.component';
-import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
+import FormInput from "../form-input/form-input.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
+import { SignUpContainer, ButtonsContainer } from "./sign-in-form.styles";
 import {
-  signInWithGooglePopup,
-  signInAuthUserWithEmailAndPassword,
-} from '../../utils/firebase/firebase.utils';
-
-import { SignUpContainer, ButtonsContainer } from './sign-in-form.styles';
+  googleSignInStart,
+  emailSignInStart,
+} from "../../store/user/user.action";
 
 // Defining object structure
 const defaultFormFields = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   // Initiating state for form handeling, and using defaultFormFields
   // in order to track user input.
   const [formFields, setFormFields] = useState(defaultFormFields);
@@ -27,7 +28,7 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   // Submit function that creates a new user.
@@ -35,14 +36,14 @@ const SignInForm = () => {
     event.preventDefault();
 
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
       resetForm();
     } catch (error) {
       if (
-        error.code === 'auth/user-not-found' ||
-        error.code === 'auth/wrong-password'
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
       ) {
-        alert('Invalid email or password');
+        alert("Invalid email or password");
         return;
       } else {
         console.log(error.code);
@@ -62,30 +63,30 @@ const SignInForm = () => {
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label='Email'
+          label="Email"
           inputOptions={{
-            type: 'email',
+            type: "email",
             required: true,
             onChange: handleChange,
-            name: 'email',
+            name: "email",
             value: email,
           }}
         />
 
         <FormInput
-          label='Password'
+          label="Password"
           inputOptions={{
-            type: 'password',
+            type: "password",
             required: true,
             onChange: handleChange,
-            name: 'password',
+            name: "password",
             value: password,
           }}
         />
         <ButtonsContainer>
-          <Button type='submit'>Sign in</Button>
+          <Button type="submit">Sign in</Button>
           <Button
-            type='button'
+            type="button"
             onClick={signInWithGoogle}
             buttonType={BUTTON_TYPE_CLASSES.google}
           >

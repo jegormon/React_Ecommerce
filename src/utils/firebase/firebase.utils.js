@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithRedirect,
@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-} from 'firebase/auth';
+} from "firebase/auth";
 import {
   getFirestore,
   doc,
@@ -18,18 +18,18 @@ import {
   writeBatch,
   query,
   getDocs,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
-import { getAnalytics } from 'firebase/analytics';
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBDJL9YrNn44dkVnfnhyGtaf5UvubtdDUU',
-  authDomain: 'react-ecommerce-db-7fc82.firebaseapp.com',
-  projectId: 'react-ecommerce-db-7fc82',
-  storageBucket: 'react-ecommerce-db-7fc82.appspot.com',
-  messagingSenderId: '1006531188608',
-  appId: '1:1006531188608:web:98865e8e60a66322af5365',
-  measurementId: 'G-GRDG504990',
+  apiKey: "AIzaSyBDJL9YrNn44dkVnfnhyGtaf5UvubtdDUU",
+  authDomain: "react-ecommerce-db-7fc82.firebaseapp.com",
+  projectId: "react-ecommerce-db-7fc82",
+  storageBucket: "react-ecommerce-db-7fc82.appspot.com",
+  messagingSenderId: "1006531188608",
+  appId: "1:1006531188608:web:98865e8e60a66322af5365",
+  measurementId: "G-GRDG504990",
 };
 
 // Initializing firebase and analytic apps
@@ -42,7 +42,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // Configuration for google-auth-provider behaviour
 googleProvider.setCustomParameters({
-  prompt: 'select_account',
+  prompt: "select_account",
 });
 
 // Initializing auth instance that communicates with Firebase
@@ -80,7 +80,7 @@ export const addCollectionAndDocuments = async (
 
 // Retriving data from firebase
 export const getCategoriesAndDocument = async () => {
-  const collectionRef = collection(db, 'categories');
+  const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
@@ -97,7 +97,7 @@ export const createUserDocumentFromAuth = async (
   if (!userAuth) return;
 
   // Here we retrieve the documents from inside the DB
-  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   // Fetch the data related to the document
   const userSnapshot = await getDoc(userDocRef);
@@ -117,11 +117,11 @@ export const createUserDocumentFromAuth = async (
         ...additionalInfo,
       });
     } catch (error) {
-      console.log('Error occured', error.message);
+      console.log("Error occured", error.message);
     }
   }
 
-  return userDocRef;
+  return userSnapshot;
 };
 
 // Inface layer function that creates a user
@@ -144,4 +144,17 @@ export const signOutUser = async () => await signOut(auth);
 // Observer listener for tracking authentication
 export const onAuthStateChangedListener = (callback) => {
   onAuthStateChanged(auth, callback);
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
 };
