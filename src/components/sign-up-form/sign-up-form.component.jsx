@@ -1,21 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
-import FormInput from '../form-input/form-input.component';
-import Button from '../button/button.component';
+import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
 
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils';
-
-import { SignUpContainer } from './sign-up-form.styles';
+import { SignUpContainer } from "./sign-up-form.styles";
+import { signUpStart } from "../../store/user/user.action";
 
 // Defining object structure
 const defaultFormFields = {
-  displayName: '',
-  email: '',
-  password: '',
-  confirmpassword: '',
+  displayName: "",
+  email: "",
+  password: "",
+  confirmpassword: "",
 };
 
 const SignUpForm = () => {
@@ -23,6 +20,7 @@ const SignUpForm = () => {
   // in order to track user input.
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmpassword } = formFields;
+  const dispatch = useDispatch();
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -34,22 +32,17 @@ const SignUpForm = () => {
 
     // Check if the passwords match
     if (password !== confirmpassword) {
-      alert('passwords do not match');
+      alert("passwords do not match");
       return;
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserDocumentFromAuth(user, { displayName });
+      dispatch(signUpStart(email, password, displayName));
       resetForm();
-      alert('User successfully regitered!');
+      alert("User successfully regitered!");
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use')
-        alert('Email already regitered');
+      if (error.code === "auth/email-already-in-use")
+        alert("Email already regitered");
     }
   };
 
@@ -68,49 +61,49 @@ const SignUpForm = () => {
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label='Display Name'
+          label="Display Name"
           inputOptions={{
-            type: 'text',
+            type: "text",
             required: true,
             onChange: handleChange,
-            name: 'displayName',
+            name: "displayName",
             value: displayName,
           }}
         />
 
         <FormInput
-          label='Email'
+          label="Email"
           inputOptions={{
-            type: 'email',
+            type: "email",
             required: true,
             onChange: handleChange,
-            name: 'email',
+            name: "email",
             value: email,
           }}
         />
 
         <FormInput
-          label='Password'
+          label="Password"
           inputOptions={{
-            type: 'password',
+            type: "password",
             required: true,
             onChange: handleChange,
-            name: 'password',
+            name: "password",
             value: password,
           }}
         />
 
         <FormInput
-          label='Confirm Password'
+          label="Confirm Password"
           inputOptions={{
-            type: 'password',
+            type: "password",
             required: true,
             onChange: handleChange,
-            name: 'confirmpassword',
+            name: "confirmpassword",
             value: confirmpassword,
           }}
         />
-        <Button children='Sign Up' type='submit' />
+        <Button children="Sign Up" type="submit" />
       </form>
     </SignUpContainer>
   );
