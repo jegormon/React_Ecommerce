@@ -1,10 +1,15 @@
 # E-commerce React App
 
-[Live demo](https://serene-dodol-3d3572.netlify.app/)
+[Live demo](https://glistening-sable-7915f7.netlify.app/)
 
 A React e-commerce website that is currently being developed.
 
 Release notes
+
+v 1.2.1
+
+- Added Stripe payment gateway
+- Deployed the latest version to Live demo site
 
 v 1.1.3
 
