@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 
-const selectCategoriesReducer = (state) => state.categories;
+import { CategoriesState } from './categories.reducer';
+import { CategoryMap } from './categories.types';
+
+const selectCategoriesReducer = (state): CategoriesState => state.categories;
 
 export const selectCategories = createSelector(
 	// Arr of input selector, that contains data for processing
@@ -10,15 +13,15 @@ export const selectCategories = createSelector(
 );
 
 // Memoized selector, will rerender the component if the data
-// is actually changed. Recieved memoized state
+// is actually changed. Received memoized state
 export const selectCategoriesMap = createSelector(
 	[selectCategories],
-	(categories) =>
+	(categories): CategoryMap =>
 		categories.reduce((acc, category) => {
 			const { title, items } = category;
 			acc[title.toLowerCase()] = items;
 			return acc;
-		}, {})
+		}, {} as CategoryMap)
 );
 
 export const selectCategoriesIsLoading = createSelector(
