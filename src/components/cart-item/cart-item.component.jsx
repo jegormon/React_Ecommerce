@@ -2,7 +2,7 @@ import {
 	CardItemContaienr,
 	ItemDetails,
 	CartItemImage,
-} from './cart-item.styles.jsx';
+} from './cart-item.styles';
 
 const CartItem = ({ cartItem }) => {
 	const { name, imageUrl, price, quantity } = cartItem;

@@ -10,7 +10,7 @@ import {
 	selectCategoriesMap,
 } from '../../store/categories/categories.selector';
 
-import { CategoryContainer, CategoryTitle } from './category.styles.jsx';
+import { CategoryContainer, CategoryTitle } from './category.styles';
 
 const Category = () => {
 	const { category } = useParams();

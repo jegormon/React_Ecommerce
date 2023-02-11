@@ -4,7 +4,7 @@ import {
 	CategoryItemConteiner,
 	Body,
 	BackgroundImage,
-} from './category-item.styles.jsx';
+} from './category-item.styles';
 
 const CategoryItem = ({ category }) => {
 	const { imageUrl, title, route } = category;

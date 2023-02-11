@@ -1,5 +1,5 @@
 import CategoryItem from '../category-item/category-item.component';
-import { CategoriesContainer } from './categories.styles.jsx';
+import { CategoriesContainer } from './categories.styles';
 
 const categories = [
 	{
