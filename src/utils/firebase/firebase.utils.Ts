@@ -8,6 +8,8 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
+	NextOrObserver,
+	User,
 } from 'firebase/auth';
 import {
 	getFirestore,
@@ -18,9 +20,10 @@ import {
 	writeBatch,
 	query,
 	getDocs,
+	QueryDocumentSnapshot,
 } from 'firebase/firestore';
 
-import { getAnalytics } from 'firebase/analytics';
+import { Category } from '../../store/categories/categories.types';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyBDJL9YrNn44dkVnfnhyGtaf5UvubtdDUU',
@@ -34,7 +37,6 @@ const firebaseConfig = {
 
 // Initializing firebase and analytic apps
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
 
 // Initializing provider for google authenticator
 // For other providers add new
@@ -62,11 +64,15 @@ export const signInWithGoogleRedirect = () =>
 // Initiating firestore instance
 export const db = getFirestore();
 
+export type ObjectToAdd = {
+	title: string;
+};
+
 // Writing shop data to Database
-export const addCollectionAndDocuments = async (
-	collectionKey,
-	objectsToAdd
-) => {
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
+	collectionKey: string,
+	objectsToAdd: T[]
+): Promise<void> => {
 	const collectionRef = collection(db, collectionKey);
 	const batch = writeBatch(db);
 
@@ -79,20 +85,32 @@ export const addCollectionAndDocuments = async (
 };
 
 // Retriving data from firebase
-export const getCategoriesAndDocument = async () => {
+export const getCategoriesAndDocument = async (): Promise<Category[]> => {
 	const collectionRef = collection(db, 'categories');
 	const q = query(collectionRef);
 
 	const querySnapshot = await getDocs(q);
-	return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+	return querySnapshot.docs.map(
+		(docSnapshot) => docSnapshot.data() as Category
+	);
+};
+
+export type AdditionalInformation = {
+	displayName?: string;
+};
+
+export type UserData = {
+	createdAt: Date;
+	displayName: string;
+	email: string;
 };
 
 // Method that will create a user data from recieved
 // Google Auth data
 export const createUserDocumentFromAuth = async (
-	userAuth,
-	additionalInfo = {}
-) => {
+	userAuth: User,
+	additionalInfo = {} as AdditionalInformation
+): Promise<void | QueryDocumentSnapshot<UserData>> => {
 	// check is parameter is passed
 	if (!userAuth) return;
 
@@ -117,22 +135,28 @@ export const createUserDocumentFromAuth = async (
 				...additionalInfo,
 			});
 		} catch (error) {
-			console.log('Error occured', error.message);
+			console.log('Error occurred', error);
 		}
 	}
 
-	return userSnapshot;
+	return userSnapshot as QueryDocumentSnapshot<UserData>;
 };
 
 // Inface layer function that creates a user
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (
+	email: string,
+	password: string
+) => {
 	if (!email || !password) return;
 
 	return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 // Interface for login
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (
+	email: string,
+	password: string
+) => {
 	if (!email || !password) return;
 
 	return await signInWithEmailAndPassword(auth, email, password);
@@ -142,11 +166,11 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => await signOut(auth);
 
 // Observer listener for tracking authentication
-export const onAuthStateChangedListener = (callback) => {
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => {
 	onAuthStateChanged(auth, callback);
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
 	return new Promise((resolve, reject) => {
 		const unsubscribe = onAuthStateChanged(
 			auth,
