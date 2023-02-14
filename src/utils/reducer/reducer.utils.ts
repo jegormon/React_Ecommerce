@@ -31,7 +31,7 @@ export function withMatcher<AC extends () => AnyAction & { type: string }>(
 // For when AC is with some payload. With elipses we accumulate props
 // as array.
 export function withMatcher<
-	AC extends (...args: any[]) => anyAction & { type: string }
+	AC extends (...args: any[]) => AnyAction & { type: string }
 >(actionCreator: AC): Matchable<AC>;
 
 // The actual withMatcher function that receives AC function
