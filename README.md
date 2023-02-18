@@ -6,6 +6,10 @@ A React e-commerce website that is currently being developed.
 
 Release notes
 
+v 2.0.0
+
+- Converted the application to TypeScript
+
 v 1.2.1
 
 - Added Stripe payment gateway
