@@ -1,5 +1,14 @@
+import { Key } from 'react';
+
 import CategoryItem from '../category-item/category-item.component';
 import { CategoriesContainer } from './categories.styles';
+
+export type Category = {
+	id: Key;
+	title: string;
+	imageUrl: string;
+	route: string;
+};
 
 const categories = [
 	{

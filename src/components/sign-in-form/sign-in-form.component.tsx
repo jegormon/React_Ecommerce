@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
 
-import { SignUpContainer, ButtonsContainer } from './sign-in-form.styles';
+import { SignInContainer, ButtonsContainer } from './sign-in-form.styles';
 import {
 	googleSignInStart,
 	emailSignInStart,
@@ -32,56 +32,43 @@ const SignInForm = () => {
 	};
 
 	// Submit function that creates a new user.
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-
 		try {
 			dispatch(emailSignInStart(email, password));
 			resetForm();
 		} catch (error) {
-			if (
-				error.code === 'auth/user-not-found' ||
-				error.code === 'auth/wrong-password'
-			) {
-				alert('Invalid email or password');
-				return;
-			} else {
-				console.log(error.code);
-			}
+			console.log('Sing in user failed', error);
 		}
 	};
 
-	const handleChange = (event) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 
 		setFormFields({ ...formFields, [name]: value });
 	};
 
 	return (
-		<SignUpContainer>
+		<SignInContainer>
 			<h2>Already have an account?</h2>
 			<span>Sign in with your email and password</span>
 			<form onSubmit={handleSubmit}>
 				<FormInput
 					label="Email"
-					inputOptions={{
-						type: 'email',
-						required: true,
-						onChange: handleChange,
-						name: 'email',
-						value: email,
-					}}
+					type="email"
+					required
+					onChange={handleChange}
+					name="email"
+					value={email}
 				/>
 
 				<FormInput
 					label="Password"
-					inputOptions={{
-						type: 'password',
-						required: true,
-						onChange: handleChange,
-						name: 'password',
-						value: password,
-					}}
+					type="password"
+					required
+					onChange={handleChange}
+					name="password"
+					value={password}
 				/>
 				<ButtonsContainer>
 					<Button type="submit">Sign in</Button>
@@ -94,7 +81,7 @@ const SignInForm = () => {
 					</Button>
 				</ButtonsContainer>
 			</form>
-		</SignUpContainer>
+		</SignInContainer>
 	);
 };
 
