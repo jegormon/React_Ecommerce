@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type CartItemImageProps = {
-	imageUrl: string;
+	src: string;
 };
 
 export const ItemDetails = styled.div`
@@ -26,5 +26,5 @@ export const CardItemContainer = styled.div`
 
 export const CartItemImage = styled.img<CartItemImageProps>`
 	width: 30%;
-	background-image: ${({ imageUrl }) => `url($imageUrl)`};
+	background-image: ${({ src }) => `url($imageUrl)`};
 `;
