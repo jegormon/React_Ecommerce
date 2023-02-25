@@ -1,4 +1,6 @@
-@import 'base/reset';
-
+@import 'abstract/mixins';
 @import 'abstract/colors';
+
+@import 'base/reset';
+@import 'base/base';
 @import 'base/typography';
