@@ -1,10 +1,14 @@
 # E-commerce React App
 
-[Live demo](https://glistening-sable-7915f7.netlify.app/)
+[Live demo](https://constructors.netlify.app/)
 
 A React e-commerce website that is currently being developed.
 
 Release notes
+
+v 2.0.1
+
+- Added responsiveness
 
 v 2.0.0
 
