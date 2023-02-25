@@ -10,6 +10,9 @@ export const BackgroundImage = styled.div<BackgroundImageProps>`
 	background-size: cover;
 	background-position: center;
 	background-image: ${({ imageUrl }) => `url(${imageUrl})`};
+
+	@media screen and (max-width: 800px) {
+	}
 `;
 
 export const Body = styled.div`
@@ -30,11 +33,21 @@ export const Body = styled.div`
 		font-size: 22px;
 		color: #4a4a4a;
 		text-transform: uppercase;
+
+		@media screen and (max-width: 800px) {
+			font-weight: 400;
+			font-size: 18px;
+			color: #000;
+		}
 	}
 
 	p {
 		font-weight: lighter;
 		font-size: 16px;
+
+		@media screen and (max-width: 800px) {
+			margin: 5px;
+		}
 	}
 `;
 
@@ -68,5 +81,9 @@ export const CategoryItemContainer = styled.div`
 
 	&:last-child {
 		margin-left: 7.5px;
+	}
+
+	@media screen and (max-width: 800px) {
+		height: 200px;
 	}
 `;
