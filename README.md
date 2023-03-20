@@ -1,6 +1,6 @@
 # E-commerce React App
 
-[Live demo](https://constructors.netlify.app/)
+[Live demo](https://react-ecom-project.netlify.app)
 
 A React e-commerce website that is currently being developed.
 
